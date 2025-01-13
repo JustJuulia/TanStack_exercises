@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "@tanstack/react-form";
-
+import axios from "axios";
 export default function User() {
     function password_validate(password) {
         const re = {
@@ -14,8 +14,15 @@ export default function User() {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         return emailRegex.test(email);
       };
-      function send_to_backend(email, password, gender, school){
-        
+      function send_to_backend_data(email, password, gender, school){
+        axios
+        .post(`http://localhost:8000/user/register?mail=${email}&password=${password}&gender=${gender}&school=${school}`)
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       }
   const form = useForm({
     defaultValues: {
@@ -32,9 +39,10 @@ export default function User() {
                 if(value.password.length >= 9){
                     if(password_validate(value.password)){
                         console.log('password is perectly fine', value)
+                        send_to_backend_data(value.email, value.password, value.gender, value.school);
                     }
                     else{
-                        console.log('   password didnt pass regex', value)
+                        console.log('password didnt pass regex', value)
                     }
                 }
                 else{
