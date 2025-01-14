@@ -24,7 +24,9 @@ application.post("/user/register", (request, response) => {
     console.log('sigmastyczna lista userow:   ',users);
     response.send();
 });
-
+application.get("/users", (request, response) => {
+    response.send(users);
+});
 
 
 application.listen(8000, () => console.log('server started'));

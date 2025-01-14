@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "@tanstack/react-form";
 import axios from "axios";
 export default function User() {
+  const [users, setUsers] = useState([]);
+  const getusers = () => {
+      axios
+        .get(`http://localhost:8000/users`)
+        .then((response) => {
+          console.log("tablica danych: ", response.data);
+          setUsers(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    };
     function password_validate(password) {
         const re = {
           capital: /[A-Z]/, 
@@ -24,14 +36,15 @@ export default function User() {
           console.error(error);
         });
       }
-  const form = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-      repeat_password:"",
-      gender: "",
-      school: "",
-    },
+      const form = useForm({
+        defaultValues: {
+          email: "",
+          password: "",
+          repeat_password:"",
+          gender: "",
+          school: "",
+        },
+    
     onSubmit: async ({ value }) => {
         if(validateEmail(value.email)){
             console.log('email is valid', value)
@@ -61,6 +74,16 @@ export default function User() {
 
   return (
     <div>
+      <div>
+        {users.map((post, index) => (
+            <div key={index} >
+             <p>{'email:  '+post.mail +'  password: '+ post.password +'  gender: '+ post.gender +'  school: '+ post.school}</p>
+            </div>
+          )
+        )}
+      </div>
+      <div>
+      <input type="button" onClick={getusers} value={'skibidi userzy'}></input>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -74,6 +97,7 @@ export default function User() {
             name="email"
             children={(field) => (
               <input
+                placeholder={field.name}
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
@@ -87,6 +111,7 @@ export default function User() {
             name="password"
             children={(field) => (
               <input
+                placeholder={field.name}
                 name={field.name}
                 type="password"
                 value={field.state.value}
@@ -101,6 +126,7 @@ export default function User() {
             name="repeat_password"
             children={(field) => (
               <input
+                placeholder={field.name}
                 name={field.name}
                 type="password"
                 value={field.state.value}
@@ -156,6 +182,7 @@ export default function User() {
         </div>
         <button type="submit">Submit</button>
       </form>
+      </div>
     </div>
   );
 }
