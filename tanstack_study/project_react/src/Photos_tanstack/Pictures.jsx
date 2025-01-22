@@ -88,8 +88,8 @@ function PictureItem({ id }) {
       fetch(`http://localhost:8000/picture/${id}`).then((res) => res),
   });
 
-  if (isLoading) return <p>Loading picture {id}...</p>;
-  if (error) return <p>An error occurred: {error.message}</p>;
+  if (isLoading) return <p>Ładuje sigma obrazek o id: {id}...</p>;
+  if (error) return <p>Jakis blad?!?!?! no nieeeeee :sob: {error.message}</p>;
 
   return (
     <div className="m-2">

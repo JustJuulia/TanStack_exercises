@@ -29,10 +29,11 @@ application.post("/user/register", (request, response) => {
 application.get("/users", (request, response) => {
     response.send(users);
 });
-application.get('/picture/:id', (request, response) => {
+application.get('/picture/:id', async (request, response) => {
     const id = request.params.id;
     const path_pic = path.join(__dirname, "assets", `${id}.jpg`); 
     if (fs.existsSync(path_pic)) {
+        await new Promise(r => setTimeout(r, 3000));
         response.sendFile(path_pic);
       } else {
         response.status(404).send("Image not found");
