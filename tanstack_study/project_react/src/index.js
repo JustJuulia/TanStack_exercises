@@ -7,7 +7,9 @@ import Pictures from './Photos_tanstack/Pictures';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <User></User>
+    <h1>ZADANIE 1:</h1><br/>
+    <User></User><br/>
+    <h1>ZADANIE 2:</h1><br/>
     <Pictures></Pictures>
   </React.StrictMode>
 );
