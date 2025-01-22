@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   QueryClient,
   QueryClientProvider,
@@ -7,12 +7,40 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 const queryClient = new QueryClient();
 export default function Pictures() {
-  const tablica_zdjec = [0, 1, 2, 3, 4];
+  const [tablica_zdjec, setZdjecia] = useState([0, 1, 2, 3 ,4]);
+function goleft(tab){
+  // [0,1,2,3,4 ] => [1,2,3,4,0]
+  const tablica_przed = tab;
+  const tablica_po = [];
+  for (let i = 0; i < tablica_przed.length; i++) {
+  if(tablica_przed.length - 1 === i){
+    tablica_po.push(tablica_przed[0])
+  }
+  else{
+    tablica_po.push(tablica_przed[i+1])
+  }
+  }
+  setZdjecia(tablica_po);
+}
+function goright(tab){
+  // [0, 1, 2 ,3 ,4] => [4, 0, 1 ,2 ,3]
 
+  const tablica_przed = tab;
+  const tablica_po = [];
+  for (let i = 0; i < tablica_przed.length; i++) {
+    if(i === 0){
+      tablica_po.push(tablica_przed[tablica_przed.length - 1])
+    }
+    else{
+      tablica_po.push(tablica_przed[i - 1])
+    }
+  }
+  setZdjecia(tablica_po);
+}
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="d-flex h-auto w-auto">
-        <button className="h-50 w-15 border-5">
+      <div className="d-flex align-items-center h-auto w-auto m-0 gap-2">
+        <button className="h-50 w-15 border-2" onClick={() => goleft(tablica_zdjec)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="50"
@@ -27,12 +55,13 @@ export default function Pictures() {
             />
           </svg>
         </button>
-        <div className="d-flex">
+        <div className="d-flex justify-content-between h-auto w-auto m-0 p-0">
+
           {tablica_zdjec.map((id) => (
             <PictureItem key={id} id={id} />
           ))}
         </div>
-        <button className="h-50 w-15 border-5">
+        <button className="h-50 w-15 border-2" onClick={() => goright(tablica_zdjec)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="50"
@@ -63,7 +92,7 @@ function PictureItem({ id }) {
   if (error) return <p>An error occurred: {error.message}</p>;
 
   return (
-    <div className="m-5">
+    <div className="m-2">
       <img src={data.url} alt={`Picture ${id}`} className="w-75 h-75" />
     </div>
   );
