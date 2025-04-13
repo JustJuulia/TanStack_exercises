@@ -2,7 +2,8 @@ const express = require('express')
 const application = express()
 var cors = require('cors');
 application.use(cors());
-
+var bcrypt = require('bcryptjs');
+var salt = bcrypt.genSaltSync(10);
 let data_users = [];
 application.get("/", (request, response) => {response.send('<div>asdadsssssssssssssa</div>')})
 application.get("/abc", (request, response) => {response.send('<div><h1>jol</h1></div>')})
@@ -28,7 +29,7 @@ application.use("/sci/4c/abc", sci_router)
 application.post("/tanstackform/login_check", (req, res) => {
     let isInData = false;
     const email = req.query.email;
-    const password = req.query.password;
+    const password = bcrypt.hashSync(req.query.password, salt);
     data_users.map((user)=>{
         if(user.mail == email){
             if(user.password == password){
@@ -43,7 +44,7 @@ res.send(data_users);
 });
 application.post("/tanstackform/newuser",(req, res) => {
     const email = req.query.email;
-    const password = req.query.password;
+    const password = bcrypt.hashSync(req.query.password, salt);
     const gender = req.query.gender;
     const school = req.query.school;
     const new_user = {
