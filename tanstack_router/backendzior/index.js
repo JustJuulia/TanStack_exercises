@@ -25,6 +25,19 @@ application.post("/newjson", (request, response) => {
     response.send();
 });
 application.use("/sci/4c/abc", sci_router)
+application.post("/tanstackform/login_check", (req, res) => {
+    let isInData = false;
+    const email = req.query.email;
+    const password = req.query.password;
+    data_users.map((user)=>{
+        if(user.mail == email){
+            if(user.password == password){
+                isInData = true;
+            }
+        }
+    })
+    res.send(isInData);
+});
 application.get("/tanstackform/data_users", (req, res) => {
 res.send(data_users);
 });

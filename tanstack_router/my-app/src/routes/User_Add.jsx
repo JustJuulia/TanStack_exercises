@@ -70,8 +70,8 @@ function User_Add() {
 
   return (
     <div>
-        <Link to="/User_table">
-        <button>Go to Users Table</button>
+        <Link to="/User_Login">
+        <button>Go to User Login</button>
       </Link>
       <div>
       <form

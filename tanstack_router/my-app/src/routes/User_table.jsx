@@ -27,19 +27,19 @@ function User_table(){
         <Link to="/User_Add">
         <button>Go to Add User Form</button>
       </Link>
-        <table>
+        <table class="table">
         <thead>
             <tr>
-                <th>
+                <th scope="col">
                     Email
                 </th>
-                <th>
+                <th scope="col">
                     Password
                 </th>
-                <th>
+                <th scope="col">
                     Gender
                 </th>
-                <th>
+                <th scope="col">
                     School
                 </th>
             </tr>
@@ -47,7 +47,7 @@ function User_table(){
         <tbody>
          {users.map((post, index) => (
             <tr key={index} >
-             <td>{post.email}</td>
+             <th scope="row">{post.mail}</th>
              <td>{post.password}</td>
              <td>{post.gender}</td>
              <td>{post.school}</td>

@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as UsertableImport } from './routes/User_table'
+import { Route as UserLoginImport } from './routes/User_Login'
 import { Route as UserAddImport } from './routes/User_Add'
 
 // Create/Update Routes
@@ -19,6 +20,12 @@ import { Route as UserAddImport } from './routes/User_Add'
 const UsertableRoute = UsertableImport.update({
   id: '/User_table',
   path: '/User_table',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const UserLoginRoute = UserLoginImport.update({
+  id: '/User_Login',
+  path: '/User_Login',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,6 +46,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserAddImport
       parentRoute: typeof rootRoute
     }
+    '/User_Login': {
+      id: '/User_Login'
+      path: '/User_Login'
+      fullPath: '/User_Login'
+      preLoaderRoute: typeof UserLoginImport
+      parentRoute: typeof rootRoute
+    }
     '/User_table': {
       id: '/User_table'
       path: '/User_table'
@@ -53,36 +67,41 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/User_Add': typeof UserAddRoute
+  '/User_Login': typeof UserLoginRoute
   '/User_table': typeof UsertableRoute
 }
 
 export interface FileRoutesByTo {
   '/User_Add': typeof UserAddRoute
+  '/User_Login': typeof UserLoginRoute
   '/User_table': typeof UsertableRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/User_Add': typeof UserAddRoute
+  '/User_Login': typeof UserLoginRoute
   '/User_table': typeof UsertableRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/User_Add' | '/User_table'
+  fullPaths: '/User_Add' | '/User_Login' | '/User_table'
   fileRoutesByTo: FileRoutesByTo
-  to: '/User_Add' | '/User_table'
-  id: '__root__' | '/User_Add' | '/User_table'
+  to: '/User_Add' | '/User_Login' | '/User_table'
+  id: '__root__' | '/User_Add' | '/User_Login' | '/User_table'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   UserAddRoute: typeof UserAddRoute
+  UserLoginRoute: typeof UserLoginRoute
   UsertableRoute: typeof UsertableRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   UserAddRoute: UserAddRoute,
+  UserLoginRoute: UserLoginRoute,
   UsertableRoute: UsertableRoute,
 }
 
@@ -97,11 +116,15 @@ export const routeTree = rootRoute
       "filePath": "__root.jsx",
       "children": [
         "/User_Add",
+        "/User_Login",
         "/User_table"
       ]
     },
     "/User_Add": {
       "filePath": "User_Add.jsx"
+    },
+    "/User_Login": {
+      "filePath": "User_Login.jsx"
     },
     "/User_table": {
       "filePath": "User_table.jsx"
