@@ -4,6 +4,27 @@ var cors = require('cors');
 application.use(cors());
 var bcrypt = require('bcryptjs');
 var salt = bcrypt.genSaltSync(10);
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+
+application.use(cookieParser());
+application.use(cors({
+  credentials: false,
+}));
+application.use(express.json());
+application.use(express.urlencoded({ extended: true }));
+
+application.use(session({
+  secret: 'secret-key-here',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false,
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60,
+  }
+}));
+
 let data_users = [];
 application.get("/", (request, response) => {response.send('<div>asdadsssssssssssssa</div>')})
 application.get("/abc", (request, response) => {response.send('<div><h1>jol</h1></div>')})
@@ -27,21 +48,23 @@ application.post("/newjson", (request, response) => {
 });
 application.use("/sci/4c/abc", sci_router)
 application.post("/tanstackform/login_check", (req, res) => {
-    let isInData = false;
-    const email = req.query.email;
-    const password = bcrypt.hashSync(req.query.password, salt);
-    data_users.map((user)=>{
-        if(user.mail == email){
-            if(user.password == password){
-                isInData = true;
-            }
-        }
-    })
-    res.send(isInData);
-});
-application.get("/tanstackform/data_users", (req, res) => {
-res.send(data_users);
-});
+    const { email, password } = req.body;
+    const user = data_users.find(user => user.mail === email);
+    
+    if (user && bcrypt.compareSync(password, user.password)) {
+      req.session.user = { email: user.mail };
+      return res.send({ success: true });
+    }
+    res.send({ success: false });
+  });
+  
+  application.get("/tanstackform/data_users", (req, res) => {
+    if (!req.session.user) {
+      return res.status(401).send({ error: "Not authorized" });
+    }
+    res.send(data_users);
+  });
+  
 application.post("/tanstackform/newuser",(req, res) => {
     const email = req.query.email;
     const password = bcrypt.hashSync(req.query.password, salt);

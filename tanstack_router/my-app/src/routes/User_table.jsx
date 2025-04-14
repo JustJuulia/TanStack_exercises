@@ -19,9 +19,20 @@ function User_table(){
             console.error("Error fetching data:", error);
             });
         };
-    useEffect(() => {
-        getusers();
-    }, [])
+        useEffect(() => {
+            axios.get(`http://localhost:8000/tanstackform/data_users`)
+              .then((response) => {
+                setUsers(response.data);
+              })
+              .catch((error) => {
+                if (error.response && error.response.status === 401) {
+                  alert("Not authorized. Please log in.");
+                } else {
+                  console.error("Error fetching data:", error);
+                }
+              });
+          }, []);
+          
     return(
         <>
         <Link to="/User_Add">

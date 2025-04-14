@@ -22,12 +22,11 @@ function User_Login() {
     return emailRegex.test(email);
   };
   function send_to_backend_data(email, password){
-    axios
-    .post(`http://localhost:8000/tanstackform/login_check?email=${email}&password=${password}`)
-    .then((response) => {
-      setLogged(response.data);
-    })
-    .catch((error) => {
+    axios.post('http://localhost:8000/tanstackform/login_check',
+      { email, password }
+    ).then((response) => {
+      setLogged(response.data.success);
+    }).catch((error) => {
       console.error(error);
     });
   }
